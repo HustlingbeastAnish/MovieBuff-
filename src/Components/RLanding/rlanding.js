@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Moviecard from "../MovieCard/Moviecard";
 
 function Landing(props) {
   const [user, setuser] = useState([{}]);
@@ -13,7 +12,7 @@ function Landing(props) {
 
   const fetchDetails = () => {
     axios
-      .get(`https://imdb-api.com/API/MostPopular${props.category}/k_jkfn1f42`)
+      .get(`https://imdb-api.com/API/MostPopular${props.category}/k_0m3vqtty`)
       .then((res) => {
         setflag(true);
         setuser(res.data.items);
@@ -27,14 +26,15 @@ function Landing(props) {
   const [handle, sethandle] = useState(null);
   const SearchDetails = () => {
     axios
-      .get(`https://imdb-api.com/API/SearchMovie/k_jkfn1f42/${handle}`)
+      .get(`https://imdb-api.com/API/SearchMovie/k_0m3vqtty/${handle}`)
       .then((res) => {
         setflag(false);
         setuser(res.data.results);
       })
       .catch((err) => {
         console.log(err);
-        setuser([{}]);
+        props.ShowAlert();
+        // window.alert("Enter Valid Movie Name");
       });
   };
 
@@ -81,49 +81,57 @@ function Landing(props) {
         </div>
       </div>
       <div>
+        {/* <button
+          onClick={fetchDetails}
+          className="bg-slate-800 border-black text-white p-2 m-2 rounded-2xl hover:scale-110 hover:bg-black-900 hover:text-red-400"
+        >
+          Movies
+        </button> */}
         <div className="grid grid-cols-3 gap-4">
           {user.map((elem) => {
-            return <Moviecard flag={flag} elem={elem} />;
+            return (
+              <div
+                className="flex justify-center mt-16 border-black"
+                key={elem.id}
+              >
+                <div className="max-w-sm rounded overflow-hidden shadow-lg">
+                  <img className="w-full h-[350px]" src={elem.image} alt="" />
+                  <div className="px-6 py-4">
+                    <div className="font-bold text-xl mb-2">{elem.title}</div>
+                    <p className="text-gray-700 text-base"></p>
+                    <p className="text-gray-700 text-base text-2xl">
+                      {flag ? elem.crew : elem.description}
+                    </p>
+                  </div>
+                  <div className="px-6 pt-4 pb-2">
+                    <i className="fa-brands fa-imdb fa-2xl">
+                      {elem.imDbRating}
+                    </i>
+
+                    {flag ? (
+                      <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                        #Coming soon
+                      </span>
+                    ) : (
+                      <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                        Most Relevant
+                      </span>
+                    )}
+                    {flag ? (
+                      <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                        {elem.year}
+                      </span>
+                    ) : (
+                      <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                        Top Searches
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
           })}
         </div>
-        <a
-          href="/#"
-          className="inline-flex items-center px-4 py-2 mr-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-        >
-          <svg
-            aria-hidden="true"
-            className="w-5 h-5 mr-2"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
-          Previous
-        </a>
-        <a
-          href="/#"
-          className="inline-flex float-right items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-        >
-          Next
-          <svg
-            aria-hidden="true"
-            className="w-5 h-5 ml-2"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
-        </a>
       </div>
     </>
   );

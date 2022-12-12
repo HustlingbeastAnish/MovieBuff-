@@ -28,18 +28,14 @@ function App() {
             exact
             path="/"
             element={
-              // <div className="mt-[-24px]">
               <RLanding category="Movies" key="Movies " ShowAlert={ShowAlert} />
-              // </div>
             }
           />
           <Route
             exact
             path="/tvs"
             element={
-              // <div className="mt-[-24px]">
               <RLanding category="TVs" key="Tvs" ShowAlert={ShowAlert} />
-              // </div>
             }
           />
         </Routes>
